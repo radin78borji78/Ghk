@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>معلوم نیس...</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:'Vazirmatn',Tahoma,sans-serif;
+  background:#050505;color:#f7f1e8;
+}
+button{font:inherit}
+
+#waiting{
+  position:relative;width:100%;height:100%;display:flex;
+  align-items:center;justify-content:center;text-align:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(91,68,34,.16),transparent 30%),
+    radial-gradient(circle at 20% 80%,rgba(130,20,50,.08),transparent 30%),
+    #050505;
+}
+#waiting:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.13;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:45px 45px;
+}
+.moon{
+  position:absolute;width:230px;height:230px;border-radius:50%;
+  top:-85px;right:-70px;
+  background:radial-gradient(circle at 35% 35%,#f7e9c8,#a68b57 45%,transparent 70%);
+  opacity:.12;filter:blur(1px);
+}
+.wait-box{position:relative;z-index:2;padding:28px;animation:fade 1.5s ease}
+.logoMark{
+  width:64px;height:64px;border:1px solid rgba(211,173,91,.45);
+  border-radius:50%;margin:0 auto 30px;display:flex;align-items:center;
+  justify-content:center;color:#d5ae62;font-size:23px;
+  box-shadow:0 0 35px rgba(213,174,98,.12);
+}
+.wait-box h1{
+  margin:0 0 15px;font-size:clamp(23px,6.5vw,40px);font-weight:500;
+  letter-spacing:-1px;
+}
+.wait-box p{margin:0;color:#b9b0a5;font-size:15px}
+#randomMessage{margin-top:32px;color:#6f685f;font-size:12px;min-height:22px}
+.dots{display:flex;gap:7px;justify-content:center;margin-top:22px}
+.dots span{width:4px;height:4px;border-radius:50%;background:#9a7841;animation:pulse 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes pulse{50%{opacity:.2;transform:scale(.7)}}
+@keyframes fade{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+#site{
+  display:none;position:relative;width:100%;height:100%;overflow:auto;
+  padding:34px 18px 70px;
+  background:
+    radial-gradient(circle at 50% -5%,rgba(132,28,55,.23),transparent 32%),
+    radial-gradient(circle at 50% 45%,rgba(91,68,34,.12),transparent 40%),
+    #070607;
+}
+#site:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.09;
+  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:100% 5px;
+}
+.wrap{position:relative;z-index:2;max-width:720px;margin:auto}
+.intro{text-align:center;margin-bottom:28px;color:#80786f;font-size:11px;letter-spacing:2px}
+.envelope{
+  width:min(90vw,450px);height:280px;margin:0 auto 25px;
+  position:relative;cursor:pointer;filter:drop-shadow(0 25px 45px #000);
+  perspective:900px;
+}
+.env-body{
+  position:absolute;inset:0;border-radius:12px;
+  background:linear-gradient(145deg,#201b19,#0b0b0b);
+  border:1px solid rgba(216,175,95,.28);
+  box-shadow:inset 0 0 45px rgba(255,255,255,.025);
+}
+.env-body:after{
+  content:"";position:absolute;inset:13px;border:1px solid rgba(216,175,95,.08);
+  border-radius:8px;
+}
+.flap{
+  position:absolute;left:0;top:0;width:100%;height:64%;
+  background:linear-gradient(150deg,#29211e,#12100f);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;transition:1s cubic-bezier(.2,.8,.2,1);
+  z-index:3;border-radius:12px 12px 0 0;
+  border-top:1px solid rgba(216,175,95,.25);
+}
+.seal{
+  position:absolute;z-index:5;left:50%;top:50%;
+  transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle,#cda75c,#765525);
+  color:#160f08;font-size:25px;
+  box-shadow:0 0 35px rgba(205,167,92,.22);
+  transition:.7s;
+}
+.envelope.open .flap{transform:rotateX(180deg);opacity:.2}
+.envelope.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+.letter{
+  display:none;background:#eee5d5;color:#241e1a;border-radius:6px;
+  padding:34px 24px 38px;box-shadow:0 30px 90px #000;
+  line-height:2.25;font-size:16px;white-space:pre-line;text-align:right;
+  position:relative;overflow:hidden;
+}
+.letter:before{
+  content:"";position:absolute;inset:12px;border:1px solid rgba(90,62,29,.12);
+  pointer-events:none;
+}
+.letter.show{display:block;animation:letterIn 1.1s ease}
+.letter-title{text-align:center;font-size:23px;margin-bottom:25px;color:#755525}
+#letterText{min-height:200px;position:relative;z-index:2}
+.cursor{display:inline-block;width:2px;height:1.1em;background:#755525;vertical-align:middle;animation:blink .7s infinite}
+@keyframes blink{50%{opacity:0}}
+.hint{text-align:center;color:#71685e;font-size:12px;margin-top:10px}
+.hidden{display:none!important}
+@keyframes letterIn{from{opacity:0;transform:translateY(35px) scale(.97)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<section id="waiting">
+  <div class="moon"></div>
+  <div class="wait-box">
+    <div class="logoMark">✦</div>
+    <h1>معلوم نیس این سایت کی برات باز بشه</h1>
+    <p>رندوم امتحان کن ....</p>
+    <div id="randomMessage"></div>
+    <div class="dots"><span></span><span></span><span></span></div>
+  </div>
+</section>
+
+<section id="site">
+  <div class="wrap">
+    <div class="intro">یک نامه برای تو</div>
+
+    <div class="envelope" id="envelope" onclick="openLetter()">
+      <div class="env-body"></div>
+      <div class="flap"></div>
+      <div class="seal">♥</div>
+    </div>
+
+    <div class="hint" id="hint">روی پاکت بزن :)</div>
+
+    <article class="letter" id="letter">
+      <div class="letter-title">💌</div>
+      <div id="letterText"></div>
+    </article>
+  </div>
+</section>
+
+<script>
+/*
+  منطق زمان:
+  سایت فقط در بازه 03:00:00 تا 03:00:59 باز می‌شود.
+  برای اینکه بعد از یک بار باز شدن با رفرش هم نامه باقی بماند،
+  زمان اولین باز شدن در sessionStorage ذخیره می‌شود.
+*/
+const OPEN_HOUR = 3;
+const OPEN_MINUTE = 0;
+const OPEN_SECOND = 0;
+
+function getTodayKey(){
+  const d = new Date();
+  return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+}
+
+function unlock(){
+  sessionStorage.setItem("siteUnlocked","true");
+  document.getElementById("waiting").style.display="none";
+  document.getElementById("site").style.display="block";
+}
+
+function checkTime(){
+  if(sessionStorage.getItem("siteUnlocked")==="true"){
+    unlock();
+    return;
+  }
+
+  const now = new Date();
+  const secondsFromMidnight =
+    now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds();
+
+  const target = OPEN_HOUR*3600 + OPEN_MINUTE*60 + OPEN_SECOND;
+
+  /*
+    فقط وقتی دقیقاً به 03:00:00 رسیدیم باز می‌شود.
+    این شرط تا پایان همان دقیقه فعال می‌ماند تا اگر
+    setInterval دقیقاً روی میلی‌ثانیه 00 نیفتاد، از دست نرود.
+  */
+  if(secondsFromMidnight >= target &&
+     secondsFromMidnight < target + 60){
+    unlock();
+  }
+}
+
+const messages=[
+  "هنوز نه 😂",
+  "گفتم رندوم امتحان کن...",
+  "شاید الان؟ 👀",
+  "صبور باش دیگه 😂",
+  "هنوز ساعتش نرسیده.",
+  "دوباره امتحان کن :)"
+];
+
+document.getElementById("randomMessage").textContent =
+  messages[Math.floor(Math.random()*messages.length)];
+
+checkTime();
+setInterval(checkTime,250);
+
+const text = `سلام
+نمی‌دونم این نامه کی برات باز شده
+از من باشه امیدوارم قبل از اینکه صبح از خواب پاشدی باشه 
+اما ممکنه حتی تا شب هم باز نشده باشه 
+نمی‌دونم این هم یه تهدیده هم قرصت 
+شاید بخاطر همین دست تقدیر سپردم که خیلی رندوم سایت باز بشه
+
+حالا حرف اصلی چیه
+اینکه امیدوارم با توجه به اتفاقات که امروز صبح افتاد
+خودت بهت تلنگر خورده باشه و عکس اول صبحتو برام بفرستی
+
+من واقعا دلم میخواد اونجوری ببینمت
+واسه من خیلی جذابه اینجوری دیدنت
+
+امیدوارم که این پیام رو به چشم فرصت دیده باشی و قبل از بیدار شدنت خونده باشی وگرنه فردا صبح که بیدار شدی و عکستو نفرستادی
+من نه قهر میکنم
+نه چیزی 
+فقط یه کاری میکنم که کلاغای آسمون به حالت گریه کنن
+
+این تهدید نیس
+فرصته که امیدوارم هوش مصنوعی و تقدیر اونو به تو داده باشن.
+
+فعلا گوکولی`;
+
+let opened=false;
+
+function openLetter(){
+  if(opened)return;
+  opened=true;
+
+  document.getElementById("envelope").classList.add("open");
+  document.getElementById("hint").classList.add("hidden");
+
+  setTimeout(()=>{
+    document.getElementById("letter").classList.add("show");
+    typeText();
+  },900);
+}
+
+function typeText(){
+  const target=document.getElementById("letterText");
+  let i=0;
+  const cursor=document.createElement("span");
+  cursor.className="cursor";
+  target.appendChild(cursor);
+
+  function type(){
+    if(i<text.length){
+      cursor.before(document.createTextNode(text[i]));
+      i++;
+      setTimeout(type,18);
+    }else{
+      cursor.remove();
+    }
+  }
+  type();
+}
+</script>
+</body>
+</html>
